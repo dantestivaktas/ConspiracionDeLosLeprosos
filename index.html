@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="La Conspiración de los Leprosos: Francia, 1321 — Una novela visual interactiva ambientada en la Edad Media. Usa la lógica y la razón para descubrir la verdad y salvar vidas inocentes.">
+  <title>La Conspiración de los Leprosos: Francia, 1321</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ============================================
+       TITLE SCREEN
+       ============================================ -->
+  <div id="title-screen">
+    <div class="title-content">
+      <p class="title-year">Francia · Anno Domini</p>
+      <h1 class="title-main">La Conspiración<br>de los Leprosos</h1>
+      <div class="title-divider"></div>
+      <h2 class="title-subtitle" style="margin-top: -0.5rem;">1321</h2>
+      <p class="title-lore">
+        En el sur de Francia, un rumor mortífero se propaga como la peste: 
+        los leprosos conspiran para envenenar los pozos del reino. 
+        Como investigador real, la verdad está en vuestras manos.
+      </p>
+      <button id="btn-start">Comenzar Investigación</button>
+    </div>
+  </div>
+
+  <!-- ============================================
+       GAME SCREEN
+       ============================================ -->
+  <div id="game-screen" class="hidden">
+
+    <!-- Header Bar -->
+    <header class="game-header">
+      <h1>La Conspiración de los Leprosos: 1321</h1>
+      <div class="progress-indicator">
+        <div class="progress-dot" title="Testimonio 1"></div>
+        <div class="progress-dot" title="Testimonio 2"></div>
+        <div class="progress-dot" title="Testimonio 3"></div>
+        <span class="progress-label">0/3 testimonios</span>
+      </div>
+    </header>
+
+    <!-- Main Layout -->
+    <div class="game-layout">
+
+      <!-- Left: Investigation Area -->
+      <main class="investigation-area">
+
+        <div class="scene-description">
+          Año del Señor, 1321. Os encontráis en la plaza central de Carcassonne, 
+          al sur del Reino de Francia. El Rey Felipe V os ha encomendado investigar 
+          las acusaciones contra los enfermos de lepra. Se dice que conspiran para 
+          envenenar los pozos del pueblo. Interrogad a los testigos y buscad la verdad 
+          antes de emitir vuestro veredicto.
+        </div>
+
+        <div class="section-title">Testigos Disponibles</div>
+
+        <!-- Character Cards -->
+        <div class="characters-grid">
+
+          <!-- Villager -->
+          <div class="character-card" data-character="villager" id="card-villager">
+            <div class="card-portrait">
+              <img src="assets/villager_portrait.png" alt="Retrato de la aldeana Marguerite">
+            </div>
+            <div class="card-info">
+              <h3 class="card-name">Marguerite Duval</h3>
+              <p class="card-role">Aldeana del pueblo</p>
+              <p class="card-action-hint">▸ Pulsa para interrogar</p>
+            </div>
+          </div>
+
+          <!-- Monk -->
+          <div class="character-card" data-character="monk" id="card-monk">
+            <div class="card-portrait">
+              <img src="assets/monk_portrait.png" alt="Retrato del monje Fray Bernard">
+            </div>
+            <div class="card-info">
+              <h3 class="card-name">Fray Bernard de Montpellier</h3>
+              <p class="card-role">Monje franciscano y estudioso</p>
+              <p class="card-action-hint">▸ Pulsa para interrogar</p>
+            </div>
+          </div>
+
+          <!-- Leper -->
+          <div class="character-card" data-character="leper" id="card-leper">
+            <div class="card-portrait">
+              <img src="assets/leper_portrait.png" alt="Retrato del enfermo Jean">
+            </div>
+            <div class="card-info">
+              <h3 class="card-name">Jean "le Malade"</h3>
+              <p class="card-role">Enfermo de lepra, recluido</p>
+              <p class="card-action-hint">▸ Pulsa para interrogar</p>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Dialogue Box (hidden by default) -->
+        <div id="dialogue-box" class="hidden">
+          <div class="dialogue-header">
+            <img class="dialogue-portrait" src="" alt="Retrato">
+            <span class="dialogue-name"></span>
+          </div>
+          <div class="dialogue-body">
+            <p class="dialogue-text"></p>
+          </div>
+          <div class="dialogue-footer">
+            <button id="btn-close-dialogue">Cerrar testimonio</button>
+          </div>
+        </div>
+
+      </main>
+
+      <!-- Right: Deduction Panel -->
+      <aside class="deduction-panel">
+        <h2 class="panel-title">📜 Panel de Deducción</h2>
+        <p class="panel-subtitle">Registro de testimonios y evidencias recopiladas</p>
+
+        <div class="testimony-list" id="testimony-list">
+          <div class="empty-state">
+            Los testimonios recopilados aparecerán aquí conforme interroguéis a los sospechosos...
+          </div>
+        </div>
+
+        <div id="btn-verdict-container">
+          <button id="btn-verdict" disabled>
+            🔒 Interroga a los tres testigos
+          </button>
+        </div>
+      </aside>
+
+    </div>
+  </div>
+
+  <!-- ============================================
+       VERDICT MODAL
+       ============================================ -->
+  <div id="verdict-modal" class="hidden">
+    <div class="modal-content">
+      <div class="modal-icon">⚖️</div>
+      <h2 class="modal-title">El Veredicto</h2>
+      <p class="modal-subtitle">Habéis escuchado todos los testimonios. Es hora de decidir el destino de los acusados ante el Rey Felipe V.</p>
+      <div class="verdict-options">
+        <button class="verdict-btn" id="btn-guilty">
+          <span class="btn-label">⚔ Declarar Culpables</span>
+          <span class="btn-desc">Los leprosos son culpables de la conspiración. Que se haga justicia con el peso de la ley del Rey.</span>
+        </button>
+        <button class="verdict-btn" id="btn-innocent">
+          <span class="btn-label">🕊 Declarar Histeria Colectiva</span>
+          <span class="btn-desc">No hay conspiración. Las acusaciones nacen del miedo y la ignorancia. Los leprosos son inocentes.</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================
+       ENDING SCREEN
+       ============================================ -->
+  <div id="ending-screen" class="hidden">
+    <div class="ending-content"></div>
+  </div>
+
+  <!-- Game Script -->
+  <script src="game.js"></script>
+
+</body>
+</html>
